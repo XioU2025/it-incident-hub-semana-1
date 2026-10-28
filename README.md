@@ -98,6 +98,3 @@ incident-hub/
 Incluye workflow de GitHub Actions, pipeline de Azure DevOps, guía de ramas/PR, propuesta de backlog (2 Epics, 4 Features, 8 Stories, 16 Tasks), registro de deuda técnica, revisión de seguridad/dependencias y estrategia de release.
 
 **Importante:** un ZIP no puede crear por sí solo las URL del proyecto, Work Items, seis PR reales, revisiones, un agente autohospedado, ejecuciones fallidas/exitosas ni aprobaciones de release. Esas evidencias obligatorias deben completarse en las cuentas reales de Azure DevOps y GitHub. La guía `docs/BRANCHING.md` explica el flujo; `docs/PLAN_AZURE_BOARDS.md` contiene el backlog inicial sugerido.
-
-## Limitaciones de la demo
-Esta versión académica usa archivo JSON y no incluye autenticación ni autorización. No exponer a Internet ni usar datos personales reales. Para producción, migrar a PostgreSQL, implementar identidad/roles, auditoría y observabilidad.
