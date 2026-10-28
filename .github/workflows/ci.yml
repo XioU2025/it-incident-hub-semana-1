@@ -1,0 +1,23 @@
+name: CI - IT Incident Hub
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Revisar sintaxis y ejecutar pruebas
+        run: npm run check

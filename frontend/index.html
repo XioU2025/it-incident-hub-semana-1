@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IT Incident Hub: registro y seguimiento de incidentes de TI.">
+  <title>IT Incident Hub</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">IH</span><span>IT Incident <b>Hub</b></span></div>
+    <div class="side-label">ESPACIO DE TRABAJO</div>
+    <a class="nav-item active" href="#dashboard"><span>▦</span> Panel general</a>
+    <a class="nav-item" href="#incidents"><span>▤</span> Incidentes</a>
+    <div class="sidebar-bottom"><div class="avatar">ST</div><div><strong>Soporte TI</strong><small>Equipo de operaciones</small></div></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">CENTRO DE OPERACIONES / TI</span><h1>Panel de incidentes</h1></div><div class="top-actions"><span class="live-dot"></span><span>Servicio operativo</span><button id="newIncidentBtn" class="button primary">＋ Nuevo incidente</button></div></header>
+    <section id="dashboard" class="stats-grid" aria-label="Indicadores">
+      <article class="stat-card"><div class="stat-label">Incidentes registrados <span class="stat-icon blue">▤</span></div><div id="statTotal" class="stat-number">—</div><div class="stat-foot">Total en el sistema</div></article>
+      <article class="stat-card"><div class="stat-label">Pendientes <span class="stat-icon amber">◷</span></div><div id="statOpen" class="stat-number">—</div><div class="stat-foot">Requieren seguimiento</div></article>
+      <article class="stat-card"><div class="stat-label">Resueltos / cerrados <span class="stat-icon green">✓</span></div><div id="statClosed" class="stat-number">—</div><div class="stat-foot">Finalizados</div></article>
+      <article class="stat-card"><div class="stat-label">Críticos abiertos <span class="stat-icon red">!</span></div><div id="statCritical" class="stat-number">—</div><div class="stat-foot">Atención prioritaria</div></article>
+    </section>
+    <section class="overview-grid">
+      <article class="panel"><div class="panel-heading"><div><h2>Incidentes por categoría</h2><p>Distribución de los reportes registrados</p></div></div><div id="categoryChart" class="chart-list"></div></article>
+      <article class="panel"><div class="panel-heading"><div><h2>Carga por técnico</h2><p>Incidentes asignados al equipo</p></div></div><div id="technicianChart" class="chart-list"></div></article>
+    </section>
+    <section id="incidents" class="panel incident-panel">
+      <div class="panel-heading list-heading"><div><h2>Registro de incidentes</h2><p>Consulta, asigna y actualiza los incidentes de TI.</p></div><span id="resultCount" class="count-pill">0 registros</span></div>
+      <div class="filters">
+        <label class="search-field"><span>⌕</span><input id="searchFilter" type="search" placeholder="Buscar por título, usuario o ID…"></label>
+        <select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option></select>
+        <select id="priorityFilter" aria-label="Filtrar por prioridad"><option value="">Todas las prioridades</option></select>
+        <select id="categoryFilter" aria-label="Filtrar por categoría"><option value="">Todas las categorías</option></select>
+        <select id="technicianFilter" aria-label="Filtrar por técnico"><option value="">Todos los técnicos</option></select>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>INCIDENTE</th><th>CATEGORÍA</th><th>PRIORIDAD</th><th>ESTADO</th><th>TÉCNICO</th><th>FECHA</th><th></th></tr></thead><tbody id="incidentRows"><tr><td colspan="7" class="empty">Cargando incidentes…</td></tr></tbody></table></div>
+      <div id="tableFooter" class="table-footer">Los cambios se guardan automáticamente.</div>
+    </section>
+    <footer>IT Incident Hub <span>•</span> Proyecto integrador DevOps <span>•</span> v1.0.0</footer>
+  </main>
+  <dialog id="incidentDialog" class="modal">
+    <form id="incidentForm">
+      <div class="modal-heading"><div><span class="eyebrow">NUEVO REGISTRO</span><h2>Crear incidente</h2></div><button type="button" class="icon-button" id="closeDialog" aria-label="Cerrar">×</button></div>
+      <p class="modal-intro">Registra el problema para que el equipo de TI pueda darle seguimiento.</p>
+      <div class="form-grid">
+        <label class="field full">Título <span>*</span><input name="title" required maxlength="120" placeholder="Ej. No funciona la conexión a la red"></label>
+        <label class="field full">Descripción <span>*</span><textarea name="description" required maxlength="2000" rows="3" placeholder="Describe el problema y cuándo comenzó…"></textarea></label>
+        <label class="field">Categoría <span>*</span><select name="category" id="formCategory" required></select></label>
+        <label class="field">Prioridad <span>*</span><select name="priority" id="formPriority" required></select></label>
+        <label class="field">Usuario que reporta <span>*</span><input name="user" required maxlength="100" placeholder="Nombre del usuario"></label>
+        <label class="field">Técnico asignado<select name="technician" id="formTechnician"><option value="">Sin asignar</option></select></label>
+      </div>
+      <div id="formError" class="form-error" role="alert"></div>
+      <div class="modal-actions"><button type="button" class="button secondary" id="cancelDialog">Cancelar</button><button type="submit" class="button primary">Crear incidente</button></div>
+    </form>
+  </dialog>
+  <dialog id="detailDialog" class="modal detail-modal"><div id="detailContent"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
