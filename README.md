@@ -101,6 +101,3 @@ Incluye workflow de GitHub Actions, pipeline de Azure DevOps, guía de ramas/PR,
 
 ## Limitaciones de la demo
 Esta versión académica usa archivo JSON y no incluye autenticación ni autorización. No exponer a Internet ni usar datos personales reales. Para producción, migrar a PostgreSQL, implementar identidad/roles, auditoría y observabilidad.
-
-## Responsables
-Completar aquí los nombres reales de integrantes y sus responsabilidades antes de entregar.
