@@ -85,9 +85,27 @@ test("API REST: validación, consulta, actualización, bitácora y estadísticas
     )
   );
 
+
   const stats = await fetch(`${base}/api/stats`);
   assert.equal(stats.status, 200);
-  assert.ok((await stats.json()).data.total >= 1);
+
+  const statsBody = await stats.json();
+  assert.ok(statsBody.data);
+  assert.equal(typeof statsBody.data.total, "number");
+  assert.equal(typeof statsBody.data.open, "number");
+  assert.equal(typeof statsBody.data.closed, "number");
+  assert.equal(typeof statsBody.data.critical, "number");
+  assert.ok(statsBody.data.total >= 1);
+  assert.ok(statsBody.data.open >= 0);
+  assert.ok(statsBody.data.closed >= 0);
+  assert.ok(statsBody.data.critical >= 0);
+  assert.equal(
+    statsBody.data.open + statsBody.data.closed,
+    statsBody.data.total
+  );
+  assert.equal(typeof statsBody.data.byCategory, "object");
+  assert.equal(typeof statsBody.data.byTechnician, "object");
+
 
   const missing = await fetch(`${base}/api/incidents/INC-NO-EXISTE`);
   assert.equal(missing.status, 404);
