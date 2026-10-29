@@ -144,4 +144,42 @@ test("API REST: validación, consulta, actualización, bitácora y estadísticas
     })
   });
   assert.equal(invalidCategory.status, 400);
+
+  // Pruebas de filtros de consulta de incidentes
+  const filterStatus = await fetch(`${base}/api/incidents?status=NUEVO`);
+  assert.equal(filterStatus.status, 200);
+  const statusResults = (await filterStatus.json()).data;
+  assert.ok(statusResults.length > 0);
+  assert.ok(statusResults.every((incident) => incident.status === "NUEVO"));
+
+  const filterPriority = await fetch(`${base}/api/incidents?priority=Alta`);
+  assert.equal(filterPriority.status, 200);
+  const priorityResults = (await filterPriority.json()).data;
+  assert.ok(priorityResults.every((incident) => incident.priority === "Alta"));
+
+  const filterCategory = await fetch(`${base}/api/incidents?category=Hardware`);
+  assert.equal(filterCategory.status, 200);
+  const categoryResults = (await filterCategory.json()).data;
+  assert.ok(categoryResults.every((incident) => incident.category === "Hardware"));
+
+  const filterTechnician = await fetch(
+    `${base}/api/incidents?technician=${encodeURIComponent("Carlos Méndez")}`
+  );
+  assert.equal(filterTechnician.status, 200);
+  const technicianResults = (await filterTechnician.json()).data;
+  assert.ok(technicianResults.every((incident) => incident.technician === "Carlos Méndez"));
+
+  const filterSearch = await fetch(
+    `${base}/api/incidents?search=${encodeURIComponent("correo")}`
+  );
+  assert.equal(filterSearch.status, 200);
+  const searchResults = (await filterSearch.json()).data;
+  assert.ok(searchResults.length > 0);
+  assert.ok(
+    searchResults.every((incident) =>
+      `${incident.id} ${incident.title} ${incident.description} ${incident.user}`
+        .toLowerCase()
+        .includes("correo")
+    )
+  );
 });
