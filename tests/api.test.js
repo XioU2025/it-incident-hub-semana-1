@@ -182,4 +182,34 @@ test("API REST: validación, consulta, actualización, bitácora y estadísticas
         .includes("correo")
     )
   );
+
+
+  // Pruebas adicionales de manejo de errores
+  const invalidStatus = await fetch(`${base}/api/incidents/${created.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "ESTADO_INVALIDO" })
+  });
+  assert.equal(invalidStatus.status, 400);
+
+  const missingComment = await fetch(
+    `${base}/api/incidents/INC-NO-EXISTE/comments`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "Comentario de prueba" })
+    }
+  );
+  assert.equal(missingComment.status, 404);
+
+  const emptyComment = await fetch(
+    `${base}/api/incidents/${created.id}/comments`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "" })
+    }
+  );
+  assert.equal(emptyComment.status, 400);
+
 });
