@@ -212,4 +212,15 @@ test("API REST: validación, consulta, actualización, bitácora y estadísticas
   );
   assert.equal(emptyComment.status, 400);
 
+
+  // Verificar que un filtro sin coincidencias devuelve una lista vacía
+  const filterNoResults = await fetch(
+    `${base}/api/incidents?status=ESTADO_INEXISTENTE`
+  );
+  assert.equal(filterNoResults.status, 200);
+
+  const noResults = (await filterNoResults.json()).data;
+  assert.ok(Array.isArray(noResults));
+  assert.equal(noResults.length, 0);
+
 });
