@@ -35,6 +35,23 @@ test("API REST: validación, consulta, actualización, bitácora y estadísticas
   assert.equal(health.status, 200);
   assert.equal((await health.json()).status, "ok");
 
+  
+  const meta = await fetch(`${base}/api/meta`);
+  assert.equal(meta.status, 200);
+
+  const metaBody = await meta.json();
+  assert.ok(metaBody.data);
+  assert.ok(Array.isArray(metaBody.data.statuses));
+  assert.ok(Array.isArray(metaBody.data.priorities));
+  assert.ok(Array.isArray(metaBody.data.categories));
+  assert.ok(Array.isArray(metaBody.data.technicians));
+
+  assert.ok(metaBody.data.statuses.length > 0);
+  assert.ok(metaBody.data.priorities.length > 0);
+  assert.ok(metaBody.data.categories.length > 0);
+  assert.ok(metaBody.data.technicians.length > 0);
+
+
   const invalid = await fetch(`${base}/api/incidents`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
