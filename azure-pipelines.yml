@@ -1,12 +1,18 @@
+
 trigger:
   branches:
-    include: [main, develop]
+    include:
+      - main
+      - develop
+
 pr:
   branches:
-    include: [main, develop]
+    include:
+      - main
+      - develop
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default
 
 variables:
   nodeVersion: '22.x'
@@ -22,17 +28,26 @@ stages:
       inputs:
         version: $(nodeVersion)
       displayName: Usar Node.js
+
     - script: npm ci
       displayName: Instalar dependencias
+
     - script: npm run check
       displayName: Lint sintáctico y pruebas API
-    - script: |
-        mkdir -p "$(Build.ArtifactStagingDirectory)/incident-hub"
-        tar --exclude='.git' --exclude='backend/data/incidents.json' -czf "$(Build.ArtifactStagingDirectory)/incident-hub/incident-hub-$(Build.BuildId).tar.gz" .
+
+    - powershell: |
+        $output = "$(Build.ArtifactStagingDirectory)\incident-hub"
+        New-Item -ItemType Directory -Force -Path $output | Out-Null
+
+        tar -czf "$output\incident-hub-$(Build.BuildId).tar.gz" `
+          --exclude=.git `
+          --exclude=backend/data/incidents.json `
+          .
       displayName: Empaquetar artefacto
+
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/incident-hub'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\incident-hub'
         ArtifactName: 'incident-hub'
         publishLocation: Container
       displayName: Publicar artefacto
