@@ -36,14 +36,9 @@ stages:
       displayName: Lint sintáctico y pruebas API
 
     - powershell: |
-        $output = "$(Build.ArtifactStagingDirectory)\incident-hub"
-        New-Item -ItemType Directory -Force -Path $output | Out-Null
-
-        tar -czf "$output\incident-hub-$(Build.BuildId).tar.gz" `
-          --exclude=.git `
-          --exclude=backend/data/incidents.json `
-          .
-      displayName: Empaquetar artefacto
+        Write-Host "Prueba de fallo controlado"
+        exit 1
+      displayName: Prueba temporal de pipeline fallido
 
     - task: PublishBuildArtifacts@1
       inputs:
