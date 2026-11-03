@@ -32,7 +32,7 @@ stages:
     - script: npm ci
       displayName: Instalar dependencias
 
-    - script: npm run check
+        - script: npm run check
       displayName: Lint sintáctico y pruebas API
 
     - powershell: |
